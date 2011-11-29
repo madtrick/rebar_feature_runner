@@ -7,6 +7,4 @@
                   kernel,
                   stdlib
                  ]},
-  {mod, { rebar_feature_runner_app, []}},
-  {env, []}
  ]}.

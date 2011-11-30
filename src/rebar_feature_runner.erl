@@ -9,9 +9,7 @@
 
 'run-features'(RebarConfig, _Unknown) ->
   ?DEBUG("Searching for features in ~s ~n", [rebar_utils:get_cwd()]),
-  FeaturesDir = filename:join(
-                  filename:join(rebar_utils:get_cwd(), rebar_config:get_global(path, "tests/"))
-                  , "features"),
+  FeaturesDir = filename:join(rebar_utils:get_cwd(), "features"),
 
   case filelib:is_dir(FeaturesDir)
   of

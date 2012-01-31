@@ -17,6 +17,7 @@
   case filelib:is_dir(FeaturesDir)
   of
     true ->
+      code:add_path(filename:join([Cwd, FeatureBasePath, "ebin"])),
       run_dir(FeaturesDir);
     false ->
       ok

@@ -7,9 +7,12 @@
 -define(LOG(Lvl, Msg, Args), rebar_log:log(Lvl, Msg, Args)).
 -define(ABORT(Msg, Args), rebar_utils:abort(Msg, Args)).
 
-'run-features'(RebarConfig, _Unknown) ->
+'run-features'(_RebarConfig, _Unknown) ->
+  Cwd = rebar_utils:get_cwd(),
+  FeatureBasePath = rebar_config:get_global(path, "."),
+      
   ?DEBUG("Searching for features in ~s ~n", [rebar_utils:get_cwd()]),
-  FeaturesDir = filename:join(rebar_utils:get_cwd(), "features"),
+  FeaturesDir = filename:join([Cwd, FeatureBasePath, "features"]),
 
   case filelib:is_dir(FeaturesDir)
   of

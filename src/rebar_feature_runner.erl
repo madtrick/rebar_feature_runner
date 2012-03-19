@@ -10,14 +10,13 @@
 'run-features'(_RebarConfig, _Unknown) ->
   Cwd = rebar_utils:get_cwd(),
   FeatureBasePath = rebar_config:get_global(path, "."),
-      
+
   ?DEBUG("Searching for features in ~s ~n", [rebar_utils:get_cwd()]),
   FeaturesDir = filename:join([Cwd, FeatureBasePath, "features"]),
 
   case filelib:is_dir(FeaturesDir)
   of
     true ->
-      code:add_path(filename:join([Cwd, FeatureBasePath, "ebin"])),
       run_dir(FeaturesDir);
     false ->
       ok
@@ -35,4 +34,21 @@ run_features([FeatureFile | Features]) ->
   run_features(Features).
 
 run_feature(FeatureFile) ->
-  cucumberl:run(FeatureFile).
+  CompileOptions = [
+    binary,
+    report,
+    warnings_as_errors,
+    {i, "ebin"},
+    {i, "include"}],
+
+  BaseName = filename:basename(FeatureFile, ".feature"),
+  SrcDir   = filename:dirname(filename:dirname(FeatureFile)),
+  SrcFile  = filename:join([SrcDir, "src", BaseName]),
+
+  case compile:file(SrcFile, CompileOptions) of
+    {ok, Module, Binary} ->
+      code:load_binary(Module, SrcFile, Binary),
+      cucumberl:run(FeatureFile);
+    error -> error
+  end.
+

@@ -1,0 +1,10 @@
+{application, rebar_feature_runner,
+ [
+  {description, "Runs cucumberl features"},
+  {vsn, git},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]}
+ ]}.
